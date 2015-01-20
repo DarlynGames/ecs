@@ -9,18 +9,24 @@ An Immutable Entity Component System
 
 (defrecord AComponent [some values])
 
-(let [entity (create-entity)
-      system (-> (create-system)
-                 (add-component entity (->AComponent :foo :bar)))]
-  (has-component? system entity AComponent) ; => true
+(def e-id (create-entity))
+(def system (-> (create-system)
+                (add-component entity (->AComponent :foo :bar)))
 
-  (get-component system entity AComponent) ; => #user.AComponent{:some :foo :values :bar}
+(has-component? system entity AComponent)
+; => true
+
+(get-component system entity AComponent)
+; => #user.AComponent{:some :foo :values :bar}
+
+(-> system
+    (update-component entity 
+                      AComponent
+                      (fn [c v] (->AComponent v (:values c)))
+                      :baz)
+    (get-component entity AComponent))
+; => #user.AComponent{:some :baz :values :bar}
   
-  (-> system
-      (update-component entity AComponent (fn [c] (->AComponent (:values c) (:some c)))))
-  
-  
-  )
 ```
 
 ## License
