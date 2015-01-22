@@ -3,14 +3,30 @@
 
 (defprotocol IEntityComponentSystem
   "The basic set of functionality required to be our ECS."
-  (add-component  [system e-id c] "Associates an instance of a Component with the given entity.")
-  (get-components [system e-id] "Returns all components associated with the given entity.")
-  (get-component  [system e-id k] [system e-id k not-found] "Get a specific type of component associated with the given entity, returning `nil` if it doesn't exist or, optionally, `not-found`.")
-  (entities-with-component [system k] "Retrieve a collection of all entites that have the given component type.")
-  (all-components [system] "Retrieve a collection of all components in the system.")
-  (remove-component [system e-id k] "Disassociate the given component type from the given entity.")
-  (remove-entity [system e-id] "Remove an entity and all of it's components from the system.")
-  (has-component? [system e-id k] "`true` if the given entity has the given component type associated with it, `false` otherwise."))
+
+  (add-component [system e-id c]
+                 "Associates an instance of a Component with the given entity.")
+
+  (get-components [system e-id]
+                  "Returns all components associated with the given entity.")
+
+  (get-component  [system e-id k] [system e-id k not-found]
+                 "Get a specific type of component associated with the given entity, returning `nil` if it doesn't exist or, optionally, `not-found`.")
+
+  (entities-with-component [system k]
+                           "Retrieve a collection of all entites that have the given component type.")
+
+  (all-components [system] [system k]
+                  "Retrieve a collection of all components, optionally of the given type, in the system.")
+
+  (remove-component [system e-id k]
+                    "Disassociate the given component type from the given entity.")
+
+  (remove-entity [system e-id]
+                 "Remove an entity and all of it's components from the system.")
+
+  (has-component? [system e-id k]
+                  "`true` if the given entity has the given component type associated with it, `false` otherwise."))
 
 (defn create-entity []
   (UUID/randomUUID))
